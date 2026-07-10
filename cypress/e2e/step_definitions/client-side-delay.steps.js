@@ -1,20 +1,20 @@
 const { Given, When, Then } = require('@badeball/cypress-cucumber-preprocessor');
 const { ClientSideDelayPage } = require('../../pages/ClientSideDelayPage');
 
-const clientSideDelayPage = new ClientSideDelayPage();
+const page = new ClientSideDelayPage();
 
 Given('I am on the Client Side Delay page', () => {
-  clientSideDelayPage.open();
+  page.open();
 });
 
 When('I trigger the client-side processing button', () => {
-  clientSideDelayPage.triggerClientSideProcessing();
+  page.triggerClientSideProcessing();
 });
 
 When('I wait for the processed data label to appear', () => {
-  clientSideDelayPage.waitForProcessedLabel();
+  page.waitForProcessedLabel();
 });
 
-Then('I should be able to click the processed label text', () => {
-  clientSideDelayPage.clickProcessedLabel();
+Then('I click the processed label text', () => {
+  page.clickProcessedLabel();
 });

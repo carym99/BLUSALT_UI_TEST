@@ -1,209 +1,133 @@
-# UI Testing Playground - Cypress BDD Framework
+# BLUSALT UI Test
 
-Automated end-to-end tests for [UI Testing Playground](https://www.uitestingplayground.com/) using **Cypress**, **Cucumber (BDD)**, and the **Page Object Model** pattern.
+Automated tests for the [UI Testing Playground](https://www.uitestingplayground.com/), built with **Cypress**, **Cucumber**, and the **Page Object Model**.
 
-## Covered Scenarios
+Clone the repo, run `npm install`, then `npm test`. That's the short version — details below if you need them.
 
-| Feature | Page | Feature File | Description |
-|---------|------|--------------|-------------|
-| Client Side Delay | `/clientdelay` | `client-side-delay.feature` | Waits for client-side JS processing and clicks the resulting label |
-| Dynamic Table | `/dynamictable` | `dynamic-table.feature` | Compares Chrome CPU value in the table with the yellow label |
-| Sample App | `/sampleapp` | `sample-app.feature` | Logs in using stable selectors (avoids dynamic IDs) |
-| Shadow DOM | `/shadowdom` | `shadow-dom.feature` | Generates a GUID, copies to clipboard, and verifies the value |
-| Alerts | `/alerts` | `alerts.feature` | Handles alert, confirm, and prompt dialogs automatically |
-| File Upload | `/upload` | `file-upload.feature` | Uploads files via drag-and-drop and browse input (inside iframe) |
+---
 
-## Project Structure
+## What gets tested
+
+| Area | Page | Scenarios |
+|------|------|-----------|
+| Client Side Delay | `/clientdelay` | Trigger the button, wait for the label, click it |
+| Dynamic Table | `/dynamictable` | Match Chrome's CPU in the table to the yellow label |
+| Sample App | `/sampleapp` | Login with good and bad credentials |
+| Shadow DOM | `/shadowdom` | Generate a GUID, copy it, check it matches the input |
+| Alerts | `/alerts` | Handle alert, confirm, and prompt dialogs |
+| File Upload | `/upload` | Upload via drag-and-drop and browse |
+
+10 scenarios across 6 feature files.
+
+---
+
+## Project layout
 
 ```
 cypress/
 ├── e2e/
-│   ├── features/           # Gherkin .feature files (BDD)
-│   └── step_definitions/   # Step definitions mapping to page objects
-├── fixtures/               # Test data files (e.g. sample-upload.txt)
-├── pages/                  # Page Object Model classes
-└── support/                # Custom commands and global config
+│   ├── features/           # Gherkin scenarios
+│   └── step_definitions/   # Glue between features and page objects
+├── fixtures/               # sample-upload.txt
+├── pages/                  # Page objects (selectors + actions)
+└── support/                # Custom commands
 cypress.config.js
 package.json
 ```
 
----
-
-## Prerequisites
-
-Before running the tests, ensure the following are in place:
-
-| Requirement | Details |
-|-------------|---------|
-| **Node.js** | Version **18 or higher** (tested with v22.x) |
-| **npm** | Bundled with Node.js; used to install dependencies and run scripts |
-| **Internet access** | Tests run against the live site `https://www.uitestingplayground.com` |
-| **Disk space** | ~500 MB free for `node_modules` and the Cypress binary (downloaded on first run) |
-| **Operating system** | Windows, macOS, or Linux (commands below use cross-platform `npm` scripts) |
-
-No global Cypress installation is required. Cypress is installed locally as a project dev dependency.
+Page objects live in `cypress/pages/`. Feature files describe behaviour in plain English; step definitions call the page objects to do the work.
 
 ---
 
-## Step-by-Step: Execute All Tests
+## Getting started
 
-### 1. Clone or open the repository
+**You'll need:**
+
+- Node.js 18+ (tested on v22)
+- npm
+- Internet access — tests hit the live playground site
+- ~500 MB free disk space for dependencies and the Cypress browser
+
+No global Cypress install. No local server to start.
+
+**Run everything:**
 
 ```bash
-cd path/to/BLUSALT_UI_TEST
-
-```
-
-### 2. Install dependencies
-
-```bash
+cd BLUSALT_UI_TEST
 npm install
+npm test
 ```
 
+First `npm install` downloads the Cypress browser — can take a few minutes.
 
-### 3. Run the full test suite (headless)
+All 10 scenarios should pass in about 1–2 minutes. Client Side Delay alone takes ~18 seconds because the site makes you wait 15 seconds on purpose.
 
-
-```bash
-npx cypress run
-```
-
-Cypress will:
-
-1. Launch Electron in headless mode
-2. Discover all `.feature` files under `cypress/e2e/features/`
-3. Compile Gherkin scenarios via `@badeball/cypress-cucumber-preprocessor`
-4. Execute **10 scenarios** across **6 feature files**
-5. Print a pass/fail summary in the terminal
-
-**Expected outcome:** All 10 scenarios pass. Full suite runtime is approximately **1–2 minutes** (the Client Side Delay scenario alone takes ~18 seconds).
-
----
-
-## Step-by-Step: Run Tests in Interactive Mode
-
-### 1. Install dependencies (if not already done)
-
-```bash
-npm install
-```
-
-### 2. Open the Cypress Test Runner
+**Run interactively** (watch tests step by step):
 
 ```bash
 npm run cy:open
 ```
 
-### 3. Select **E2E Testing**
+Choose E2E Testing, pick a browser, click a `.feature` file.
 
-Choose **E2E Testing** when prompted in the Cypress launchpad.
-
-### 4. Choose a browser
-
-Select a supported browser (e.g. **Electron**, **Chrome**, or **Edge**).
-
-### 5. Run a feature file
-
-Click any `.feature` file in the spec list to run it. You can:
-
-- Re-run individual scenarios
-- Inspect commands, DOM snapshots, and screenshots on failure
-- Time-travel through each step
-
----
-
-## Step-by-Step: Run a Single Feature or Spec
-
-Run one feature file:
+**Run one feature:**
 
 ```bash
 npx cypress run --spec "cypress/e2e/features/sample-app.feature"
 ```
 
-Run multiple specific features:
+**npm scripts:**
 
-```bash
-npx cypress run --spec "cypress/e2e/features/alerts.feature,cypress/e2e/features/shadow-dom.feature"
-```
-
-Run in a specific browser:
-
-```bash
-npx cypress run --browser chrome
-```
+| Command | Does |
+|---------|------|
+| `npm test` | Run all tests headless |
+| `npm run cy:run` | Same as above |
+| `npm run cy:open` | Open Cypress UI |
 
 ---
 
-## Available npm Scripts
+## Config (`cypress.config.js`)
 
-| Script | Command | Description |
-|--------|---------|-------------|
-| `npm test` | `cypress run` | Run all tests headless  |
-| `npm run cy:run` | `cypress run` | Same as `npm test` |
-| `npm run cy:open` | `cypress open` | Open interactive Cypress Test Runner |
-
----
-
-## Configuration Reference
-
-Key settings in `cypress.config.js`:
-
-| Setting | Value | Purpose |
-|---------|-------|---------|
-| `baseUrl` | `https://www.uitestingplayground.com` | Target application under test |
-| `specPattern` | `cypress/e2e/features/**/*.feature` | BDD feature file discovery |
-| `defaultCommandTimeout` | `20000` ms | Max wait for commands (needed for Client Side Delay) |
-| `pageLoadTimeout` | `60000` ms | Max wait for page navigation |
-| `includeShadowDom` | `true` | Enables Shadow DOM piercing for GUID generator tests |
-
----
-
-## Design Patterns
-
-### Page Object Model (POM)
-
-Each page under test has a dedicated class in `cypress/pages/` that encapsulates selectors and actions. Step definitions delegate to these page objects, keeping Gherkin scenarios readable and maintenance low.
-
-### BDD (Behavior Driven Development)
-
-Scenarios are written in Gherkin (`.feature` files) and implemented via step definitions in `cypress/e2e/step_definitions/`. This separates *what* is being tested from *how* it is automated.
+| Setting | Value | Why |
+|---------|-------|-----|
+| `baseUrl` | `https://www.uitestingplayground.com` | Site under test |
+| `defaultCommandTimeout` | 20s | Client Side Delay needs the extra wait |
+| `pageLoadTimeout` | 60s | Slow page loads |
+| `includeShadowDom` | `true` | GUID generator lives in Shadow DOM |
 
 ---
 
 ## Notes
 
-### Prerequisites and environment
+### Before you run
 
-- **First-time setup:** The initial `npm install` downloads the Cypress application binary. Allow extra time and ensure your network allows downloads from Cypress CDN.
-- **Live external dependency:** All tests hit the public [UI Testing Playground](https://www.uitestingplayground.com) website. Tests will fail if the site is down, unreachable, or its behaviour/selectors change.
-- **No local server required:** Unlike component tests, no application server needs to be started locally.
+- Tests need [uitestingplayground.com](https://www.uitestingplayground.com) to be up. If the site's down, tests fail — not a framework bug.
+- First install pulls the Cypress binary from their CDN. Slow network = slow install.
 
-### Observations per scenario
+### Per scenario
 
-- **Client Side Delay:** The playground intentionally waits **15 seconds** after clicking the trigger button before showing the result label. The test uses a 20-second command timeout. Expect this scenario to take ~18 seconds on its own.
-- **Dynamic Table:** Table row and column order is randomized on each page load. The test locates the CPU column by header text and the Chrome row by name, rather than relying on fixed positions.
-- **Sample App:** Username and password field `id` attributes are regenerated on every page load. The framework uses stable selectors (`placeholder`, `type`, `#login`, `#loginstatus`) instead of dynamic IDs.
-- **Shadow DOM:** The GUID generator lives inside an open Shadow DOM on the `guid-generator` custom element. `includeShadowDom: true` is enabled globally, and clipboard read/write permissions are granted via Chrome DevTools Protocol before asserting clipboard content.
-- **Alerts:** Confirm and Prompt buttons trigger a **secondary alert** after a 1-second `setTimeout`. Cypress `window:confirm`, `window:prompt`, and `window:alert` handlers are registered before each click to handle both dialogs without manual intervention.
-- **File Upload:** The upload UI is a React component rendered inside an **iframe** (`/static/upload.html`). Tests use a custom `getIframeBody` command to interact with the drop zone (`.upload-box`) and hidden file input. Success is verified via `.success-file` ("1 file(s) selected") and `.file-item` (filename).
+- **Client Side Delay** — 15-second wait is built into the site. Don't shorten the timeout.
+- **Dynamic Table** — Row/column order shuffles on reload. Tests find CPU by header text and Chrome by name.
+- **Sample App** — Username/password IDs change every load. Tests use placeholders and `#login` instead.
+- **Shadow DOM** — Clipboard permissions are granted in code before reading `navigator.clipboard`.
+- **Alerts** — Confirm and Prompt fire a second dialog after 1 second. Handlers are set up before each click.
+- **File Upload** — Upload UI is inside an iframe. Tests use `getIframeBody` to reach the drop zone and file input.
 
-### Blockers and known limitations
+### Blockers & limitations
 
-- **Site availability:** Test execution is blocked if `https://www.uitestingplayground.com` is unavailable or returns errors.
-- **Site changes:** Updates to the playground HTML, selectors, or timing behaviour may cause test failures until page objects are updated.
-- **Client Side Delay runtime:** This scenario cannot be shortened; it reflects the site's designed 15-second client-side processing delay.
-- **Clipboard API (Shadow DOM):** Clipboard read/write requires a secure origin (HTTPS) and explicit browser permissions. The test grants permissions programmatically; failures may occur in browsers or environments that restrict the Clipboard API or CDP permission grants.
-- **Iframe cross-origin:** The upload iframe is same-origin (`/static/upload.html`), so content is accessible. If the iframe source were changed to a different domain, iframe interaction would be blocked by browser security policies.
-- **Headless vs interactive:** All tests pass in headless Electron. If a scenario fails in a specific browser, re-run with `npx cypress open` to debug visually.
-- **Screenshots on failure:** Failed tests save screenshots to `cypress/screenshots/`. Review these when diagnosing failures.
+- Site offline or changed → tests break until page objects are updated.
+- Client Side Delay can't run faster than the site allows.
+- Clipboard test needs HTTPS; some OS/browser settings may still block it.
+- Upload iframe is same-origin today. A cross-origin change would break those tests.
+- Screenshots on failure land in `cypress/screenshots/`.
 
-### Troubleshooting
+### Something broke?
 
-| Issue | Suggested action |
-|-------|------------------|
-| `npm install` fails | Verify Node.js 18+ is installed (`node -v`) and retry with a stable network connection |
-| Cypress binary not found | Run `npx cypress install` to re-download the binary |
-| Timeout on Client Side Delay | Confirm the site is responsive; the 15-second wait is expected |
-| File upload assertion fails | Ensure `cypress/fixtures/sample-upload.txt` exists and the iframe loads completely |
-| Shadow DOM clipboard mismatch | Re-run in Electron or Chrome; verify clipboard permissions are not blocked by OS policies |
-| All tests fail immediately | Check internet connectivity and that `https://www.uitestingplayground.com` loads in a browser |
+| Problem | Fix |
+|---------|-----|
+| `npm install` fails | Check `node -v` is 18+ and retry on a stable connection |
+| Cypress binary missing | `npx cypress install` |
+| Client Side Delay timeout | Open the site in a browser — 15s wait is normal |
+| Upload fails | Check `cypress/fixtures/sample-upload.txt` exists |
+| Clipboard mismatch | Try Electron or Chrome; check OS clipboard settings |
+| Everything fails | Confirm the playground loads in your browser |

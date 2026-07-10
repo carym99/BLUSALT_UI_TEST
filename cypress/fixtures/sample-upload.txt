@@ -1,1 +1,1 @@
-Sample file for UI Testing Playground upload tests.
+test upload file

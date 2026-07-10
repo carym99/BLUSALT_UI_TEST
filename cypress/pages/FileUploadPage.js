@@ -6,9 +6,7 @@ class FileUploadPage extends BasePage {
     this.path = '/upload';
     this.iframe = 'iframe';
     this.uploadBox = '.upload-box';
-    this.browseButton = '.browse-btn';
     this.fileInput = 'input[type="file"]';
-    this.fileList = '.file-list';
     this.fileItem = '.file-item';
     this.successFile = '.success-file';
     this.fixtureFile = 'cypress/fixtures/sample-upload.txt';
@@ -38,12 +36,10 @@ class FileUploadPage extends BasePage {
 
   verifyFileUploaded(fileName = 'sample-upload.txt') {
     this.getUploadFrame().find(this.successFile).should('be.visible');
-
     this.getUploadFrame()
       .find(this.fileItem)
       .should('be.visible')
       .and('contain.text', fileName);
-
     return this;
   }
 }

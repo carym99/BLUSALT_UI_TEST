@@ -43,10 +43,10 @@ class SampleAppPage extends BasePage {
     return this;
   }
 
-  verifyLoggedOut() {
+  verifyInvalidCredentials() {
     cy.get(this.loginStatus)
-      .should('have.class', 'text-info')
-      .and('contain.text', 'User logged out.');
+      .should('have.class', 'text-danger')
+      .and('contain.text', 'Invalid username/password');
     return this;
   }
 }

@@ -1,19 +1,13 @@
 Feature: Alerts
-  As a test automation engineer
-  I want to handle browser dialogs automatically
-  So that tests run without manual intervention
 
-  Scenario: Handle alert dialog
+  Scenario: Accept an alert
     Given I am on the Alerts page
-    When I click the Alert button and accept the dialog
-    Then the alert dialog should be handled successfully
+    When I accept the alert dialog
 
-  Scenario: Handle confirm dialog
+  Scenario: Accept a confirmation
     Given I am on the Alerts page
-    When I click the Confirm button and accept the dialog
-    Then the confirmation result should be handled successfully
+    When I accept the confirm dialog
 
-  Scenario: Handle prompt dialog with a custom answer
+  Scenario: Answer a prompt with a custom value
     Given I am on the Alerts page
-    When I click the Prompt button and answer with "dogs"
-    Then the prompt result should be handled successfully
+    When I answer the prompt with "dogs"

@@ -4,7 +4,6 @@ class DynamicTablePage extends BasePage {
   constructor() {
     super();
     this.path = '/dynamictable';
-    this.table = '[role="table"]';
     this.columnHeader = '[role="columnheader"]';
     this.row = '[role="row"]';
     this.cell = '[role="cell"]';
@@ -35,13 +34,6 @@ class DynamicTablePage extends BasePage {
       .get(this.chromeCpuLabel)
       .invoke('text')
       .then((text) => text.replace('Chrome CPU:', '').trim());
-  }
-
-  verifyChromeCpuMatchesLabel() {
-    this.getChromeCpuFromTable().then((tableCpu) => {
-      this.getChromeCpuFromLabel().should('equal', tableCpu);
-    });
-    return this;
   }
 }
 

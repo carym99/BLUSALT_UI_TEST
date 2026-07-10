@@ -1,24 +1,24 @@
 const { Given, When, Then } = require('@badeball/cypress-cucumber-preprocessor');
 const { ShadowDomPage } = require('../../pages/ShadowDomPage');
 
-const shadowDomPage = new ShadowDomPage();
+const page = new ShadowDomPage();
 
 Given('I am on the Shadow DOM page', () => {
-  shadowDomPage.open();
+  page.open();
 });
 
 Given('clipboard permissions are granted', () => {
-  shadowDomPage.grantClipboardAccess();
+  page.grantClipboardAccess();
 });
 
 When('I generate a new GUID', () => {
-  shadowDomPage.generateGuid();
+  page.generateGuid();
 });
 
 When('I copy the GUID to the clipboard', () => {
-  shadowDomPage.copyGuidToClipboard();
+  page.copyGuidToClipboard();
 });
 
-Then('the clipboard value should match the input field value', () => {
-  shadowDomPage.verifyClipboardMatchesInput();
+Then('the clipboard matches the input field', () => {
+  page.verifyClipboardMatchesInput();
 });

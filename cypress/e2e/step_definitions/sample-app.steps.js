@@ -1,22 +1,20 @@
 const { Given, When, Then } = require('@badeball/cypress-cucumber-preprocessor');
 const { SampleAppPage } = require('../../pages/SampleAppPage');
 
-const sampleAppPage = new SampleAppPage();
+const page = new SampleAppPage();
 
 Given('I am on the Sample App page', () => {
-  sampleAppPage.open();
+  page.open();
 });
 
 When('I log in with username {string} and password {string}', (username, password) => {
-  sampleAppPage.login(username, password);
+  page.login(username, password);
 });
 
-Then('I should see a welcome message for {string}', (username) => {
-  sampleAppPage.verifyWelcomeMessage(username);
+Then('I see a welcome message for {string}', (username) => {
+  page.verifyWelcomeMessage(username);
 });
 
-Then('I should see an invalid credentials message', () => {
-  cy.get(sampleAppPage.loginStatus)
-    .should('have.class', 'text-danger')
-    .and('contain.text', 'Invalid username/password');
+Then('I see an invalid credentials message', () => {
+  page.verifyInvalidCredentials();
 });
